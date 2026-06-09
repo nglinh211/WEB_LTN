@@ -1,0 +1,24 @@
+{% extends "staff/base_staff.html" %}
+{% block title %}Cập nhật tồn kho | L.T.N Nhân viên{% endblock %}
+{% block content %}
+<section class="dash-card inventory-update-card">
+  <div class="dash-card-head"><h2>Cập nhật tồn kho</h2><a href="{% url 'shop:staff_inventory' %}">Quay lại</a></div>
+  <div class="inventory-product-box">
+    {% if product.main_image %}<img src="{{ product.main_image.url }}" alt="{{ product.name }}">{% endif %}
+    <div>
+      <h3>{{ product.name }}</h3>
+      <p>SKU: {{ product.sku }}</p>
+      <p>Tồn hiện tại: <strong>{{ old_stock }}</strong></p>
+      <p>Trạng thái: {% if product.stock == 0 %}<span class="status-badge status-cancelled">Hết hàng</span>{% elif product.stock <= 10 %}<span class="status-badge status-pending">Sắp hết</span>{% else %}<span class="status-badge status-completed">Còn hàng</span>{% endif %}</p>
+      {% if latest_log %}<p>Lần cập nhật gần nhất: {{ latest_log.created_at|date:"d/m/Y H:i" }} bởi {{ latest_log.staff_user.username }}</p>{% endif %}
+    </div>
+  </div>
+  <form class="dashboard-form" method="post">
+    {% csrf_token %}
+    <label>Số lượng mới{{ form.new_stock }}</label>
+    <label>Ghi chú cập nhật{{ form.note }}</label>
+    {% if form.errors %}<div class="form-errors">{{ form.errors }}</div>{% endif %}
+    <div class="form-actions"><button class="dash-btn" type="submit">Lưu thay đổi</button><a class="dash-btn secondary" href="{% url 'shop:staff_inventory' %}">Hủy</a></div>
+  </form>
+</section>
+{% endblock %}

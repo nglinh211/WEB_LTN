@@ -1,0 +1,25 @@
+{% extends "staff/base_staff.html" %}
+{% block title %}Khách hàng | L.T.N Nhân viên{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Khách hàng cần chăm sóc</h2></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Username</th><th>Họ tên</th><th>Email</th><th>SĐT</th><th>Số đơn</th><th>Tổng chi tiêu</th><th>Ngày tham gia</th></tr></thead>
+      <tbody>
+        {% for customer in customers %}
+          <tr>
+            <td>{{ customer.username }}</td>
+            <td>{{ customer.profile.full_name|default:"-" }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.profile.phone|default:"-" }}</td>
+            <td>{{ customer.order_count }}</td>
+            <td>{{ customer.total_spent_display }}</td>
+            <td>{{ customer.date_joined|date:"d/m/Y" }}</td>
+          </tr>
+        {% empty %}<tr><td colspan="7">Chưa có khách hàng.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

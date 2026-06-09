@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}BST mới | L.T.N Clothing{% endblock %}
+{% block content %}
+{% static 'img/hero/tiec-3.jpg' as collection_hero %}
+<main class="collection-page">
+  <section class="collection-hero" style="background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('{{ collection_hero }}')">
+    <div class="collection-hero__content">
+      <p class="eyebrow">BST mới</p>
+      <h1>Tinh tế trong từng khoảnh khắc</h1>
+      <p>Thanh lịch, nữ tính và đầy cảm hứng từ thế giới thời trang L.T.N.</p>
+    </div>
+  </section>
+
+  <section class="container jm-section collection-list-section">
+    <div class="section-title">
+      <p class="eyebrow">Bộ sưu tập</p>
+      <h2>Bộ sưu tập L.T.N</h2>
+    </div>
+    <div class="collection-grid">
+      {% for collection in collections %}
+        <a class="collection-card" href="{{ collection.get_absolute_url }}" aria-label="{{ collection.title }}">
+          {% if collection.banner_image %}
+            <img src="{{ collection.banner_image.url }}" alt="{{ collection.title }}">
+          {% endif %}
+          <h3>{{ collection.title }}</h3>
+        </a>
+      {% empty %}
+        <div class="empty">Chưa có bộ sưu tập.</div>
+      {% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+{% static 'js/main.js' as main_js %}
+<script src="{{ main_js }}"></script>
+{% endblock %}

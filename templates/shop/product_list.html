@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Sản phẩm | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container jm-section">
+  <div class="shop-head">
+    <div>
+      <p class="eyebrow">{% if category %}{{ category.name }}{% else %}Bộ sưu tập{% endif %}</p>
+      <h1>Sản phẩm L.T.N</h1>
+      <p>Tìm kiếm, lọc danh mục và sắp xếp sản phẩm theo nhu cầu.</p>
+    </div>
+    <form class="shop-filter" method="get">
+      {{ form.q }}
+      {{ form.sort }}
+      <button>Tìm kiếm</button>
+    </form>
+  </div>
+
+  <div class="category-row jm-category-row">
+    {% for item in categories %}{% include "partials/category_circle.html" with category=item %}{% endfor %}
+  </div>
+
+  <div class="jm-product-grid">
+    {% for product in page_obj %}
+      {% include "partials/product_card.html" %}
+    {% empty %}
+      <div class="empty">Không tìm thấy sản phẩm phù hợp.</div>
+    {% endfor %}
+  </div>
+
+  {% if page_obj.has_other_pages %}
+    <div class="pagination-row">
+      {% if page_obj.has_previous %}<a class="btn secondary" href="?page={{ page_obj.previous_page_number }}">Trước</a>{% endif %}
+      <span>Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a class="btn secondary" href="?page={{ page_obj.next_page_number }}">Sau</a>{% endif %}
+    </div>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}{% if sale %}Sửa{% else %}Tạo{% endif %} khuyến mãi | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card sale-form-card">
+  <div class="dash-card-head">
+    <h2>{% if sale %}Sửa chương trình{% else %}Tạo chương trình sale{% endif %}</h2>
+    <a href="{% url 'shop:dashboard_sales' %}">Quay lại</a>
+  </div>
+  <form class="dashboard-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Tên chương trình{{ form.name }}</label>
+    <label>Mô tả{{ form.description }}</label>
+    <div class="form-two">
+      <label>Loại giảm{{ form.discount_type }}</label>
+      <label>Giá trị giảm{{ form.discount_value }}</label>
+    </div>
+    <div class="form-two">
+      <label>Bắt đầu{{ form.start_date }}</label>
+      <label>Kết thúc{{ form.end_date }}</label>
+    </div>
+    <label>Ảnh banner{{ form.banner_image }}</label>
+    <label class="check-row">{{ form.is_active }} Kích hoạt chương trình</label>
+    {% if form.errors %}<div class="form-errors">{{ form.errors }}</div>{% endif %}
+    <div class="form-actions">
+      <button class="dash-btn" type="submit">Lưu khuyến mãi</button>
+      {% if sale %}<a class="dash-btn secondary" href="{% url 'shop:dashboard_sale_targets' sale.id %}">Gán target</a>{% endif %}
+    </div>
+  </form>
+</section>
+{% endblock %}

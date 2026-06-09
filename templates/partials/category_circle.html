@@ -1,0 +1,12 @@
+<a class="category-circle" href="{{ category.get_absolute_url }}">
+  <span>
+    {% if category.icon %}
+      <img src="{{ category.icon.url }}" alt="{{ category.name }}">
+    {% elif category.image %}
+      <img src="{{ category.image.url }}" alt="{{ category.name }}">
+    {% else %}
+      {{ category.name|slice:":1" }}
+    {% endif %}
+  </span>
+  <strong>{{ category.name }}</strong>
+</a>

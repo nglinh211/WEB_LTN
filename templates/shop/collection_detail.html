@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ collection.title }} | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section">
+  <div class="page-head"><div><p class="eyebrow">Bộ sưu tập</p><h1>{{ collection.title }}</h1><p>{{ collection.description }}</p></div></div>
+  {% if collection.banner_image %}<img src="{{ collection.banner_image.url }}" alt="{{ collection.title }}">{% endif %}
+  <section class="section"><div class="grid grid-3">{% for product in products %}{% include "partials/product_card.html" %}{% endfor %}</div></section>
+</main>
+{% endblock %}

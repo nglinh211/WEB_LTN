@@ -1,0 +1,66 @@
+{% load static %}
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Nhân viên L.T.N{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+</head>
+<body class="dashboard-body staff-body">
+  <div class="dashboard-shell staff-shell">
+    <aside class="dashboard-sidebar staff-sidebar">
+      <a class="dashboard-brand" href="{% url 'shop:staff_dashboard' %}">
+        <img src="{% static 'WEBIMG/logoweb.jpg' %}" alt="L.T.N Clothing">
+        <span>L.T.N Nhân viên</span>
+      </a>
+      <nav class="dashboard-nav staff-nav" aria-label="Khu vực nhân viên">
+        <a class="{% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}" href="{% url 'shop:staff_dashboard' %}">
+          <span><svg viewBox="0 0 24 24"><path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z"/></svg></span>Tổng quan
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'staff_orders' %}active{% endif %}" href="{% url 'shop:staff_orders' %}">
+          <span><svg viewBox="0 0 24 24"><path d="M7 3h10v18l-2-1-2 1-2-1-2 1-2-1V3Zm3 5h4m-4 4h4m-4 4h2"/></svg></span>Đơn hàng
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'staff_products' %}active{% endif %}" href="{% url 'shop:staff_products' %}">
+          <span><svg viewBox="0 0 24 24"><path d="M6 7V6a6 6 0 0 1 12 0v1m-15 0h18l-2 14H5L3 7Zm6 4v2m6-2v2"/></svg></span>Sản phẩm
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'staff_customers' %}active{% endif %}" href="{% url 'shop:staff_customers' %}">
+          <span><svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-8 0m8 0a4 4 0 1 1-8 0m8 0c3 1 5 3 5 6v2H3v-2c0-3 2-5 5-6"/></svg></span>Khách hàng
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'staff_inventory' or request.resolver_match.url_name == 'staff_inventory_update' or request.resolver_match.url_name == 'staff_inventory_report' %}active{% endif %}" href="{% url 'shop:staff_inventory' %}">
+          <span><svg viewBox="0 0 24 24"><path d="M4 7h16M6 7v13h12V7M8 4h8l2 3H6l2-3Zm3 7h2m-2 4h2"/></svg></span>Tồn kho
+        </a>
+        <form class="staff-logout" method="post" action="{% url 'accounts:logout' %}">
+          {% csrf_token %}
+          <button type="submit">
+            <span><svg viewBox="0 0 24 24"><path d="M15 17l5-5-5-5m5 5H9m2 8H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/></svg></span>Đăng xuất
+          </button>
+        </form>
+      </nav>
+    </aside>
+
+    <main class="dashboard-main staff-main">
+      <header class="dashboard-topbar staff-topbar">
+        <div>
+          <p class="dashboard-eyebrow">L.T.N Nhân viên</p>
+          <h1>{% block page_title %}{{ page_title|default:"Nhân viên" }}{% endblock %}</h1>
+        </div>
+        <div class="dashboard-user staff-user">
+          <span>{{ request.user.username }}</span>
+        </div>
+      </header>
+
+      {% if messages %}
+        <div class="dashboard-messages">
+          {% for message in messages %}<div>{{ message }}</div>{% endfor %}
+        </div>
+      {% endif %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+{% block scripts %}{% endblock %}
+</body>
+</html>

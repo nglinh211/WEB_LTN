@@ -1,0 +1,30 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng ký | L.T.N Clothing</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="brand" href="index.html"><img src="WEBIMG/logoweb.jpg" alt="L.T.N Clothing"><span>L.T.N Clothing</span></a>
+    <h1>Đăng ký khách hàng</h1>
+    <p>Tài khoản mới được gán role CUSTOMER và lưu vào localStorage key <strong>ltnUsers</strong>.</p>
+    <form class="form-grid" data-register-form>
+      <input name="name" required placeholder="Họ tên">
+      <input name="email" type="email" required placeholder="Email">
+      <input name="phone" required placeholder="Số điện thoại">
+      <input name="address" placeholder="Địa chỉ">
+      <input name="password" type="password" required minlength="6" placeholder="Mật khẩu">
+      <button>Đăng ký</button>
+    </form>
+    <div class="status" data-auth-message>Đăng ký xong sẽ chuyển về trang đăng nhập.</div>
+    <div class="auth-links"><a href="index.html">Về trang chủ</a><a href="login.html">Đã có tài khoản</a></div>
+  </main>
+  <script src="assets/data/fake_users.js"></script>
+  <script src="assets/js/permission.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>

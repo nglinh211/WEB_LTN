@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Đặt hàng thành công | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section">
+  <div class="card">
+    <p class="eyebrow">Cảm ơn bạn</p>
+    <h1>Đơn hàng #{{ order.id }} đã được ghi nhận</h1>
+    <p>L.T.N Clothing sẽ liên hệ xác nhận đơn hàng trong thời gian sớm nhất.</p>
+    <p><strong>Tổng tiền:</strong> {{ order.total_amount|vnd }}</p>
+    <a class="btn" href="{% url 'accounts:orders' %}">Xem lịch sử đơn hàng</a>
+  </div>
+</main>
+{% endblock %}

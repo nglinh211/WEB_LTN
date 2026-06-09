@@ -1,0 +1,36 @@
+{% extends "staff/base_staff.html" %}
+{% block title %}Đơn hàng cần xử lý | L.T.N Nhân viên{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Đơn cần xử lý</h2></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Tổng tiền</th><th>Trạng thái</th><th>Ngày tạo</th><th>Cập nhật</th></tr></thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>#{{ order.id }}</td>
+            <td>{{ order.full_name }}</td>
+            <td>{{ order.phone }}</td>
+            <td>{{ order.total_amount_display }}</td>
+            <td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td>
+            <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+            <td>
+              <form class="inline-status-form" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" value="{{ order.id }}">
+                <select name="status">
+                  {% for key, label in status_choices %}
+                    <option value="{{ key }}" {% if order.status == key %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                </select>
+                <button>Cập nhật</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}<tr><td colspan="7">Không có đơn cần xử lý.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

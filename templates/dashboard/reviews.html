@@ -1,0 +1,35 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Đánh giá | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="kpi-grid three">
+  <article class="kpi-card"><span>Tổng đánh giá</span><strong>{{ total_reviews }}</strong></article>
+  <article class="kpi-card"><span>Đang hiển thị</span><strong>{{ approved_reviews }}</strong></article>
+  <article class="kpi-card"><span>Đã ẩn</span><strong>{{ hidden_reviews }}</strong></article>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Danh sách đánh giá sản phẩm</h2></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Sản phẩm</th><th>Khách hàng</th><th>Số sao</th><th>Nhận xét</th><th>Trạng thái</th><th>Ngày tạo</th><th>Hành động</th></tr></thead>
+      <tbody>
+      {% for review in reviews %}
+        <tr>
+          <td><strong>{{ review.product.name }}</strong><small>{{ review.product.sku }}</small></td>
+          <td>{{ review.user.username }}</td>
+          <td><span class="review-stars">{{ review.stars }}</span></td>
+          <td>{{ review.comment|truncatewords:18 }}</td>
+          <td><span class="status-badge {% if review.is_approved %}status-completed{% else %}status-cancelled{% endif %}">{% if review.is_approved %}Đang hiển thị{% else %}Đã ẩn{% endif %}</span></td>
+          <td>{{ review.created_at|date:"d/m/Y H:i" }}</td>
+          <td class="row-actions action-buttons">
+            <form method="post">{% csrf_token %}<input type="hidden" name="review_id" value="{{ review.id }}"><input type="hidden" name="action" value="approve"><button>Duyệt</button></form>
+            <form method="post">{% csrf_token %}<input type="hidden" name="review_id" value="{{ review.id }}"><input type="hidden" name="action" value="hide"><button>Ẩn</button></form>
+            <form method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa mục này không?');">{% csrf_token %}<input type="hidden" name="review_id" value="{{ review.id }}"><input type="hidden" name="action" value="delete"><button>Xóa</button></form>
+          </td>
+        </tr>
+      {% empty %}<tr><td colspan="7">Chưa có đánh giá.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

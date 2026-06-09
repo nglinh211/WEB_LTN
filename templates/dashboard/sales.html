@@ -1,0 +1,47 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Khuyến mãi | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="kpi-grid">
+  <article class="kpi-card"><span>Tổng chương trình</span><strong>{{ stats.total }}</strong><small>Tất cả chiến dịch</small></article>
+  <article class="kpi-card"><span>Đang chạy</span><strong>{{ stats.running }}</strong><small>Đang áp dụng</small></article>
+  <article class="kpi-card"><span>Sắp diễn ra</span><strong>{{ stats.upcoming }}</strong><small>Đã lên lịch</small></article>
+  <article class="kpi-card"><span>Đã kết thúc</span><strong>{{ stats.ended }}</strong><small>Hết hiệu lực</small></article>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head">
+    <h2>Chương trình khuyến mãi</h2>
+    <a class="dash-btn" href="{% url 'shop:dashboard_sale_create' %}">Thêm khuyến mãi</a>
+  </div>
+  <div class="sale-filter-tabs">
+    <a class="{% if not current_status %}active{% endif %}" href="{% url 'shop:dashboard_sales' %}">Tất cả</a>
+    <a class="{% if current_status == 'running' %}active{% endif %}" href="?status=running">Đang chạy</a>
+    <a class="{% if current_status == 'upcoming' %}active{% endif %}" href="?status=upcoming">Sắp diễn ra</a>
+    <a class="{% if current_status == 'ended' %}active{% endif %}" href="?status=ended">Đã kết thúc</a>
+    <a class="{% if current_status == 'disabled' %}active{% endif %}" href="?status=disabled">Tạm tắt</a>
+  </div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Tên chương trình</th><th>Loại giảm</th><th>Giá trị</th><th>Bắt đầu</th><th>Kết thúc</th><th>Trạng thái</th><th>Target</th><th>Hành động</th></tr></thead>
+      <tbody>
+        {% for sale in sales %}
+          <tr>
+            <td><strong>{{ sale.name }}</strong><small>{{ sale.description|truncatewords:12 }}</small></td>
+            <td>{{ sale.get_discount_type_display }}</td>
+            <td><span class="sale-value">{{ sale.discount_label }}</span></td>
+            <td>{{ sale.start_date|date:"d/m/Y H:i" }}</td>
+            <td>{{ sale.end_date|date:"d/m/Y H:i" }}</td>
+            <td><span class="status-badge sale-status-{{ sale.status_key }}">{{ sale.status_label }}</span></td>
+            <td>{{ sale.targets.count }}</td>
+            <td class="row-actions">
+              <a href="{% url 'shop:dashboard_sale_edit' sale.id %}">Sửa</a>
+              <a href="{% url 'shop:dashboard_sale_targets' sale.id %}">Gán target</a>
+              <a href="{% url 'shop:dashboard_sale_delete' sale.id %}">Xóa</a>
+            </td>
+          </tr>
+        {% empty %}<tr><td colspan="8">Chưa có chương trình khuyến mãi.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

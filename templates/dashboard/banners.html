@@ -1,0 +1,16 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Banner | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Banner & vị trí hiển thị</h2><a class="dash-btn" href="/admin/shop/banner/add/">Thêm banner</a></div>
+  <div class="banner-admin-grid">
+    {% for banner in banners %}
+      <article class="banner-admin-card">
+        <div class="banner-preview">{% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}">{% else %}<span>Banner</span>{% endif %}</div>
+        <div><h3>{{ banner.title }}</h3><p>{{ banner.subtitle }}</p><span class="status-badge">{{ banner.get_position_display }}</span> <span class="status-badge {% if banner.is_active %}status-completed{% else %}status-cancelled{% endif %}">{% if banner.is_active %}Đang hiển thị{% else %}Đã ẩn{% endif %}</span><p>Thứ tự: {{ banner.sort_order }}</p></div>
+        <div class="row-actions"><a href="/admin/shop/banner/{{ banner.id }}/change/">Sửa</a><a href="/admin/shop/banner/{{ banner.id }}/delete/">Xóa</a></div>
+      </article>
+    {% empty %}<p>Chưa có banner.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

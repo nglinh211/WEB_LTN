@@ -1,0 +1,110 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Khách hàng | L.T.N Admin{% endblock %}
+{% block content %}
+<style>
+  .customer-table {
+    table-layout: fixed !important;
+    min-width: 1560px !important;
+  }
+
+  .customer-table .customer-name-field {
+    width: 340px !important;
+    min-width: 340px !important;
+    max-width: 340px !important;
+    overflow: visible !important;
+  }
+
+  .customer-table .customer-cell {
+    grid-template-columns: 44px 260px !important;
+    min-width: 314px !important;
+  }
+
+  .customer-table .customer-cell strong,
+  .customer-table .customer-cell small {
+    white-space: nowrap !important;
+  }
+</style>
+<section class="kpi-grid three">
+  <article class="kpi-card"><span>Tổng khách hàng</span><strong>{{ total_customers }}</strong></article>
+  <article class="kpi-card"><span>Khách mới tháng này</span><strong>{{ new_this_month }}</strong></article>
+  <article class="kpi-card"><span>Khách đã mua hàng</span><strong>{{ buyers }}</strong></article>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Danh sách khách hàng</h2></div>
+  <form class="dash-filters customer-filter" method="get">
+    <input name="q" value="{{ query }}" placeholder="Tìm tên, email hoặc số điện thoại">
+    <select name="segment">
+      <option value="">Tất cả khách hàng</option>
+      <option value="new" {% if segment == "new" %}selected{% endif %}>Khách mới</option>
+      <option value="vip" {% if segment == "vip" %}selected{% endif %}>Khách VIP</option>
+      <option value="frequent" {% if segment == "frequent" %}selected{% endif %}>Khách mua nhiều</option>
+      <option value="no_order" {% if segment == "no_order" %}selected{% endif %}>Khách chưa mua</option>
+    </select>
+    <button>Tìm kiếm</button>
+  </form>
+
+  <div class="dash-table-wrap">
+    <table class="dash-table customer-table">
+      <colgroup>
+        <col class="customer-name-col" style="width: 340px;">
+        <col class="customer-email-col" style="width: 210px;">
+        <col class="customer-phone-col" style="width: 155px;">
+        <col class="customer-order-col" style="width: 115px;">
+        <col class="customer-spend-col" style="width: 170px;">
+        <col class="customer-date-col" style="width: 170px;">
+        <col class="customer-status-col" style="width: 180px;">
+        <col class="customer-action-col" style="width: 220px;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th class="customer-name-field">Khách hàng</th>
+          <th>Email</th>
+          <th>SĐT</th>
+          <th>Số đơn</th>
+          <th>Tổng chi tiêu</th>
+          <th>Ngày tham gia</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for customer in customers %}
+        <tr>
+          <td class="customer-name-field">
+            <div class="customer-cell">
+              {% if customer.profile.avatar %}
+                <img class="customer-avatar" src="{{ customer.profile.avatar.url }}" alt="{{ customer.profile.full_name|default:customer.username }}">
+              {% else %}
+                <span class="customer-avatar avatar-dot">{{ customer.username|first|upper }}</span>
+              {% endif %}
+              <div>
+                <strong>{{ customer.profile.full_name|default:customer.username }}</strong>
+                <small>@{{ customer.username }}</small>
+              </div>
+            </div>
+          </td>
+          <td>{{ customer.email|default:"-" }}</td>
+          <td>{{ customer.profile.phone|default:"-" }}</td>
+          <td>{{ customer.order_count }}</td>
+          <td>{{ customer.total_spent_display }}</td>
+          <td>{{ customer.date_joined|date:"d/m/Y" }}</td>
+          <td><span class="status-badge {% if customer.customer_status == 'Khách VIP' %}status-completed{% elif customer.order_count %}status-confirmed{% else %}status-disabled{% endif %}">{{ customer.customer_status }}</span></td>
+          <td class="row-actions action-buttons">
+            <a href="/admin/auth/user/{{ customer.id }}/change/">Chi tiết</a>
+            <a href="{% url 'shop:dashboard_orders' %}?q={{ customer.username }}">Lịch sử</a>
+            {% if customer.profile.phone %}
+              <a href="tel:{{ customer.profile.phone }}">Liên hệ</a>
+            {% else %}
+              <a href="mailto:{{ customer.email }}">Liên hệ</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="8">Chưa có khách hàng.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

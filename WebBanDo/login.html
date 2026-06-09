@@ -1,0 +1,27 @@
+﻿<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Đăng nhập | L.T.N Clothing</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="brand" href="index.html"><img src="WEBIMG/logoweb.jpg" alt="L.T.N Clothing"><span>L.T.N Clothing</span></a>
+    <h1>Đăng nhập</h1>
+    <p>Đăng nhập để quản lý tài khoản, theo dõi đơn hàng và tiếp tục trải nghiệm mua sắm tại L.T.N Clothing.</p>
+    <form class="form-grid" data-login-form>
+      <input name="email" type="email" required placeholder="Email">
+      <input name="password" type="password" required placeholder="Mật khẩu">
+      <button>Đăng nhập</button>
+    </form>
+    <div class="status" data-auth-message hidden></div>
+    <div class="auth-links"><a href="index.html">Về trang chủ</a><a href="register.html">Đăng ký khách hàng</a></div>
+  </main>
+  <script src="assets/data/fake_users.js"></script>
+  <script src="assets/js/permission.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>

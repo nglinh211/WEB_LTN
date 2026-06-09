@@ -1,0 +1,25 @@
+{% extends "staff/base_staff.html" %}
+{% load static %}
+{% block title %}Báo cáo tồn kho | L.T.N Nhân viên{% endblock %}
+{% block content %}
+<section class="staff-kpi-grid inventory-kpi-grid">
+  <article class="staff-kpi"><span>Tổng sản phẩm</span><strong>{{ stats.total_products }}</strong></article>
+  <article class="staff-kpi"><span>Tổng tồn kho</span><strong>{{ stats.stock_total }}</strong></article>
+  <article class="staff-kpi"><span>Sản phẩm sắp hết</span><strong>{{ stats.low_stock }}</strong></article>
+  <article class="staff-kpi"><span>Hết hàng</span><strong>{{ stats.out_stock }}</strong></article>
+  <article class="staff-kpi"><span>Danh mục nhiều hàng nhất</span><strong class="text-fit">{{ stats.top_category }}</strong></article>
+</section>
+
+<section class="chart-grid inventory-chart-grid">
+  <article class="dash-card chart-card"><h2>Tồn kho theo danh mục</h2><canvas id="inventoryCategoryChart"></canvas></article>
+  <article class="dash-card chart-card"><h2>Top sản phẩm sắp hết</h2><canvas id="inventoryLowChart"></canvas></article>
+  <article class="dash-card chart-card"><h2>Top sản phẩm tồn nhiều</h2><canvas id="inventoryTopChart"></canvas></article>
+</section>
+{{ category_chart|json_script:"inventory-category-data" }}
+{{ low_stock_chart|json_script:"inventory-low-data" }}
+{{ top_stock_chart|json_script:"inventory-top-data" }}
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Giới thiệu | L.T.N Clothing{% endblock %}
+
+{% block content %}
+<main class="about-page about-brand-page">
+  <section class="container about-hero about-brand-hero">
+    <div class="about-hero__copy">
+      <p class="eyebrow">L.T.N Clothing</p>
+      <h1>Tinh tế trong từng khoảnh khắc</h1>
+      <p>L.T.N Clothing được tạo nên dành cho những cô gái yêu sự thanh lịch, hiện đại và luôn muốn xuất hiện với phiên bản tự tin nhất của chính mình.</p>
+      <a class="btn" href="{% url 'shop:product_list' %}">Khám phá sản phẩm</a>
+    </div>
+    <div class="about-hero__image">
+      {% if gallery_images.0.image %}
+        <img src="{{ gallery_images.0.image.url }}" alt="Không gian thời trang L.T.N Clothing">
+      {% else %}
+        <img src="{% static 'WEBIMG/sang trọng.2.png' %}" alt="Không gian thời trang L.T.N Clothing">
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="container about-section about-story-block">
+    <div class="about-section__head">
+      <p class="eyebrow">Về chúng tôi</p>
+      <h2>Về L.T.N Clothing</h2>
+    </div>
+    <div class="about-rich-text">
+      <p>Thành lập từ năm 2022, L.T.N Clothing là thương hiệu thời trang nữ hướng đến phong cách hiện đại, thanh lịch và tinh tế. Với mong muốn mang đến cho phái đẹp những sản phẩm vừa thời trang vừa thoải mái, chúng tôi luôn chú trọng vào chất lượng, thiết kế và trải nghiệm khách hàng.</p>
+      <p>Mỗi sản phẩm của L.T.N không chỉ là một bộ trang phục, mà còn là cách để người phụ nữ thể hiện gu thẩm mỹ, cá tính và sự tự tin trong từng khoảnh khắc.</p>
+    </div>
+    <div class="about-mini-gallery">
+      {% if gallery_images.1.image %}<img src="{{ gallery_images.1.image.url }}" alt="Bộ sưu tập L.T.N">{% else %}<img src="{% static 'WEBIMG/sang trọng.1.png' %}" alt="Bộ sưu tập L.T.N">{% endif %}
+      {% if gallery_images.2.image %}<img src="{{ gallery_images.2.image.url }}" alt="Thiết kế L.T.N">{% else %}<img src="{% static 'WEBIMG/tối giản.1.png' %}" alt="Thiết kế L.T.N">{% endif %}
+    </div>
+  </section>
+
+  <section class="container about-section about-narrative">
+    <div class="about-section__head">
+      <p class="eyebrow">Câu chuyện thương hiệu</p>
+      <h2>Câu chuyện L.T.N</h2>
+      <p>L.T.N bắt đầu từ niềm yêu thích với những thiết kế tối giản nhưng có chiều sâu. Chúng tôi tin rằng vẻ đẹp không cần quá phô trương, mà nằm ở sự vừa vặn, đường cắt tinh tế, chất liệu dễ chịu và cảm giác thoải mái khi khoác lên mình.</p>
+    </div>
+    <div class="brand-values-grid">
+      <article class="about-card"><span>01</span><h3>Thiết kế tinh tế</h3><p>Đường nét gọn gàng, tỷ lệ vừa vặn và màu sắc được tiết chế để dễ mặc, dễ đẹp mỗi ngày.</p></article>
+      <article class="about-card"><span>02</span><h3>Chất liệu dễ chịu</h3><p>L.T.N ưu tiên cảm giác khi mặc, từ độ mềm của vải đến sự linh hoạt trong từng chuyển động.</p></article>
+      <article class="about-card"><span>03</span><h3>Trải nghiệm tận tâm</h3><p>Mỗi tư vấn, đóng gói và phản hồi đều được chăm chút để khách hàng cảm thấy an tâm.</p></article>
+    </div>
+  </section>
+
+  <section class="container about-slogan">
+    <h2>Tinh tế trong từng khoảnh khắc</h2>
+    <p>Dù là nơi công sở, buổi hẹn cuối tuần hay những ngày bình thường nhất, L.T.N mong muốn mỗi cô gái đều cảm thấy mình xinh đẹp, tự tin và được là chính mình.</p>
+  </section>
+
+  <section class="container about-two">
+    <article class="about-card about-card-large">
+      <h2>Tầm nhìn</h2>
+      <p>L.T.N Clothing hướng đến trở thành thương hiệu thời trang nữ được yêu thích tại Việt Nam, nơi khách hàng có thể tìm thấy những thiết kế thanh lịch, dễ ứng dụng và phù hợp với phong cách sống hiện đại.</p>
+    </article>
+    <article class="about-card about-card-large">
+      <h2>Sứ mệnh</h2>
+      <p>Sứ mệnh của L.T.N là đồng hành cùng phụ nữ trong hành trình xây dựng phong cách cá nhân, mang đến những sản phẩm chỉn chu, chất lượng và giàu cảm xúc.</p>
+    </article>
+  </section>
+
+  <section class="container about-section">
+    <div class="about-section__head">
+      <p class="eyebrow">Cảm hứng sản phẩm</p>
+      <h2>Cảm hứng dành cho từng thiết kế</h2>
+      <p>Mỗi thiết kế của L.T.N được lấy cảm hứng từ vẻ đẹp mềm mại, sự tối giản và tinh thần tự tin của người phụ nữ hiện đại.</p>
+    </div>
+    <div class="inspiration-image-grid">
+      <article>
+        {% if gallery_images.3.image %}<img src="{{ gallery_images.3.image.url }}" alt="Thanh lịch công sở">{% else %}<img src="{% static 'WEBIMG/đồ công sở.4.jpg' %}" alt="Thanh lịch công sở">{% endif %}
+        <div><strong>Thanh lịch công sở</strong><p>Chỉn chu nhưng không cứng nhắc, dành cho những ngày cần sự tự tin và chuyên nghiệp.</p></div>
+      </article>
+      <article>
+        {% if gallery_images.4.image %}<img src="{{ gallery_images.4.image.url }}" alt="Dịu dàng khi xuống phố">{% else %}<img src="{% static 'WEBIMG/đi chơi.4.jpg' %}" alt="Dịu dàng khi xuống phố">{% endif %}
+        <div><strong>Dịu dàng khi xuống phố</strong><p>Nhẹ nhàng, linh hoạt và dễ phối để mỗi cuộc hẹn đều có một điểm nhấn riêng.</p></div>
+      </article>
+      <article>
+        {% if gallery_images.5.image %}<img src="{{ gallery_images.5.image.url }}" alt="Tinh tế trong từng chi tiết">{% else %}<img src="{% static 'WEBIMG/sang trọng.3.png' %}" alt="Tinh tế trong từng chi tiết">{% endif %}
+        <div><strong>Tinh tế trong từng chi tiết</strong><p>Từ chất liệu đến đường may, mỗi chi tiết nhỏ đều góp phần tạo nên cảm xúc khi mặc.</p></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="container about-section">
+    <div class="about-section__head">
+      <p class="eyebrow">Hình ảnh thương hiệu</p>
+      <h2>Những khoảnh khắc của L.T.N</h2>
+    </div>
+    <div class="about-gallery">
+      {% for image in gallery_images %}
+        {% if image.image %}
+          <figure><img src="{{ image.image.url }}" alt="Hình ảnh thương hiệu L.T.N Clothing"></figure>
+        {% endif %}
+      {% empty %}
+        <figure><img src="{% static 'WEBIMG/sang trọng.1.png' %}" alt="Hình ảnh thương hiệu L.T.N Clothing"></figure>
+        <figure><img src="{% static 'WEBIMG/sang trọng.2.png' %}" alt="Hình ảnh thương hiệu L.T.N Clothing"></figure>
+        <figure><img src="{% static 'WEBIMG/tối giản.1.png' %}" alt="Hình ảnh thương hiệu L.T.N Clothing"></figure>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="container about-section">
+    <div class="section-title">
+      <p class="eyebrow">Sản phẩm nổi bật</p>
+      <h2>Những thiết kế được yêu thích</h2>
+    </div>
+    <div class="jm-product-grid">
+      {% for product in featured_products %}
+        {% include "partials/product_card.html" %}
+      {% endfor %}
+    </div>
+    <div class="about-actions">
+      <a class="btn" href="{% url 'shop:product_list' %}">Xem tất cả sản phẩm</a>
+    </div>
+  </section>
+
+  <section class="container about-section">
+    <div class="about-section__head">
+      <p class="eyebrow">Cam kết</p>
+      <h2>Cam kết của L.T.N</h2>
+    </div>
+    <div class="commitment-grid">
+      <article><strong>Chất lượng chỉn chu</strong><p>Sản phẩm được chọn lọc và kiểm tra kỹ trước khi đến tay khách hàng.</p></article>
+      <article><strong>Thiết kế dễ ứng dụng</strong><p>Mỗi thiết kế đều hướng đến tính thẩm mỹ và sự tiện dụng trong đời sống thật.</p></article>
+      <article><strong>Tư vấn thân thiện</strong><p>L.T.N lắng nghe nhu cầu để gợi ý sản phẩm phù hợp nhất với từng khách hàng.</p></article>
+      <article><strong>Trải nghiệm mua sắm an tâm</strong><p>Từ chọn sản phẩm đến hậu mãi, chúng tôi luôn mong bạn cảm thấy được chăm sóc.</p></article>
+    </div>
+  </section>
+
+  <section class="container about-final-cta">
+    <h2>Cùng L.T.N tìm ra phong cách dành riêng cho bạn</h2>
+    <p>Một thiết kế phù hợp không chỉ làm bạn đẹp hơn, mà còn giúp bạn tự tin hơn trong từng khoảnh khắc.</p>
+    <a class="btn" href="{% url 'shop:product_list' %}">Mua sắm ngay</a>
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

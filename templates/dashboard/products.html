@@ -1,0 +1,35 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load humanize %}
+{% block title %}Sản phẩm | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Danh sách sản phẩm</h2><a class="dash-btn" href="/admin/shop/product/add/">Thêm sản phẩm</a></div>
+  <form class="dash-filters" method="get">
+    <input name="q" value="{{ request.GET.q }}" placeholder="Tìm tên hoặc SKU">
+    <select name="category"><option value="">Tất cả danh mục</option>{% for category in categories %}<option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select>
+    <select name="flag"><option value="">Sale/New</option><option value="sale" {% if request.GET.flag == "sale" %}selected{% endif %}>Sale</option><option value="new" {% if request.GET.flag == "new" %}selected{% endif %}>New</option></select>
+    <select name="status"><option value="">Trạng thái</option><option value="active" {% if request.GET.status == "active" %}selected{% endif %}>Đang bán</option><option value="inactive" {% if request.GET.status == "inactive" %}selected{% endif %}>Ẩn</option></select>
+    <button>Tìm</button>
+  </form>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Ảnh</th><th>Sản phẩm</th><th>SKU</th><th>Danh mục</th><th>Giá</th><th>Sale</th><th>Tồn</th><th>Trạng thái</th><th>Hành động</th></tr></thead>
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td>{% if product.main_image %}<img class="admin-thumb" src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<span class="admin-thumb empty-thumb"></span>{% endif %}</td>
+            <td><strong>{{ product.name }}</strong><div class="row-tags">{% if product.has_sale %}<span class="flag sale">Sale</span>{% endif %}{% if product.is_new %}<span class="flag new">New</span>{% endif %}</div></td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.price_display }}</td>
+            <td>{{ product.sale_price_display }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{% if product.stock == 0 %}<span class="status-badge status-cancelled">Hết hàng</span>{% elif product.stock <= 10 %}<span class="status-badge status-pending">Sắp hết</span>{% elif product.is_active %}<span class="status-badge status-completed">Còn hàng</span>{% else %}<span class="status-badge">Ẩn</span>{% endif %}</td>
+            <td class="row-actions"><a href="{{ product.get_absolute_url }}">Xem</a><a href="/admin/shop/product/{{ product.id }}/change/">Sửa</a>{% if can_delete %}<a href="/admin/shop/product/{{ product.id }}/delete/">Xóa</a>{% endif %}</td>
+          </tr>
+        {% empty %}<tr><td colspan="9">Không có sản phẩm.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

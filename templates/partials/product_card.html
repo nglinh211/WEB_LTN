@@ -1,0 +1,30 @@
+{% load shop_extras %}
+<article class="card product-card">
+  <a class="product-art" href="{{ product.get_absolute_url }}">
+    {% if product.main_image %}
+      <img src="{{ product.main_image.url }}" alt="{{ product.name }}" loading="lazy">
+    {% else %}
+      <img src="/static/WEBIMG/sang trọng.1.png" alt="{{ product.name }}" loading="lazy">
+    {% endif %}
+    <span class="badge">{{ product.category.name }}</span>
+    {% if product.has_sale %}
+      <span class="product-flag sale">{% if product.get_discount_percent %}-{{ product.get_discount_percent }}%{% else %}Sale{% endif %}</span>
+    {% elif product.is_new %}
+      <span class="product-flag new">New</span>
+    {% endif %}
+  </a>
+  <div class="content">
+    <h3>{{ product.name }}</h3>
+    <div class="product-rating"><span>★</span> {{ product.average_rating|default:"0" }} ({{ product.review_count }} đánh giá)</div>
+    <p>{{ product.description|truncatewords:16 }}</p>
+    <p class="price">
+      {% if product.has_sale %}<small><del>{{ product.price|vnd }}</del></small>{% endif %}
+      {{ product.final_price|vnd }}
+    </p>
+    <div class="hero-actions">
+      <a class="btn secondary" href="{{ product.get_absolute_url }}">Chi tiết</a>
+      <a class="btn secondary" href="{% url 'shop:toggle_wishlist' product.id %}">Yêu thích</a>
+      <a class="btn" href="{% url 'shop:add_to_cart' product.id %}">Thêm vào giỏ</a>
+    </div>
+  </div>
+</article>

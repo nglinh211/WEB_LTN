@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Giỏ hàng | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section">
+  <div class="page-head"><div><p class="eyebrow">Giỏ hàng</p><h1>Sản phẩm đã chọn</h1><p>Cập nhật số lượng, xóa sản phẩm và chuyển sang thanh toán.</p></div></div>
+  {% if cart.items.all %}
+    <div class="card">
+      {% for item in cart.items.all %}
+        <div class="cart-row">
+          {% if item.product.main_image %}<img class="cart-thumb" src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">{% else %}<div class="cart-thumb"></div>{% endif %}
+          <div><strong>{{ item.product.name }}</strong><p>{{ item.product.category.name }}</p></div>
+          <span class="cart-price">{% if item.product.has_sale %}<del>{{ item.product.price|vnd }}</del>{% endif %}{{ item.product.final_price|vnd }}</span>
+          <form method="post" action="{% url 'shop:update_cart' item.id %}">{% csrf_token %}<input type="number" name="quantity" min="1" max="{{ item.product.stock }}" value="{{ item.quantity }}"><button class="btn secondary">Cập nhật</button></form>
+          <a class="btn ghost" href="{% url 'shop:remove_cart' item.id %}">Xóa</a>
+        </div>
+      {% endfor %}
+      <div class="cart-total"><h2>Tổng: {{ cart.total_amount|vnd }}</h2><a class="btn" href="{% url 'shop:checkout' %}">Thanh toán</a></div>
+    </div>
+  {% else %}
+    <div class="empty">Giỏ hàng đang trống. <a class="text-link" href="{% url 'shop:product_list' %}">Tiếp tục mua sắm</a>.</div>
+  {% endif %}
+</main>
+{% endblock %}

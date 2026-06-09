@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Đăng nhập | L.T.N Clothing{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<main class="auth-shell">
+  <section class="auth-panel" aria-labelledby="login-title">
+    <a class="brand auth-brand" href="{% url 'shop:home' %}">
+      <img src="{% static 'WEBIMG/logoweb.jpg' %}" alt="L.T.N Clothing">
+      <span>L.T.N Clothing</span>
+    </a>
+
+    <div class="auth-heading">
+      <span class="eyebrow">Tài khoản khách hàng</span>
+      <h1 id="login-title">Đăng nhập</h1>
+      <p>Đăng nhập để quản lý hồ sơ, theo dõi đơn hàng và tiếp tục mua sắm.</p>
+    </div>
+
+    <form class="auth-form" method="post" novalidate>
+      {% csrf_token %}
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
+      {% endif %}
+
+      {% if form.non_field_errors %}
+        <div class="status">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+
+      {% for field in form %}
+        <label class="field">
+          <span>{{ field.label }}</span>
+          {{ field }}
+          {% for error in field.errors %}
+            <small class="field-error">{{ error }}</small>
+          {% endfor %}
+        </label>
+      {% endfor %}
+
+      <button type="submit">Đăng nhập</button>
+    </form>
+
+    <div class="auth-links">
+      <a href="{% url 'shop:home' %}">Về trang chủ</a>
+      <a href="{% url 'accounts:register' %}">Tạo tài khoản mới</a>
+    </div>
+  </section>
+
+  <aside class="auth-side" aria-label="Lợi ích tài khoản">
+    <div>
+      <span class="eyebrow">L.T.N member</span>
+      <h2>Mua sắm nhanh hơn, quản lý đơn rõ hơn.</h2>
+      <p>Lưu thông tin nhận hàng, xem lịch sử đơn và truy cập giỏ hàng ở mọi lần ghé thăm.</p>
+    </div>
+    <ul>
+      <li>Theo dõi trạng thái giao hàng</li>
+      <li>Lưu sản phẩm yêu thích</li>
+      <li>Nhận hỗ trợ theo hồ sơ mua hàng</li>
+    </ul>
+  </aside>
+</main>
+{% endblock %}

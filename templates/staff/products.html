@@ -1,0 +1,54 @@
+{% extends "staff/base_staff.html" %}
+{% block title %}{% if inventory_only %}Tồn kho{% else %}Sản phẩm{% endif %} | L.T.N Nhân viên{% endblock %}
+{% block content %}
+{% if inventory_only %}
+<section class="staff-kpi-grid inventory-kpi-grid">
+  <article class="staff-kpi"><span>Tổng sản phẩm</span><strong>{{ stats.total }}</strong></article>
+  <article class="staff-kpi"><span>Còn hàng</span><strong>{{ stats.in_stock }}</strong></article>
+  <article class="staff-kpi"><span>Sắp hết</span><strong>{{ stats.low_stock }}</strong></article>
+  <article class="staff-kpi"><span>Hết hàng</span><strong>{{ stats.out_stock }}</strong></article>
+  <article class="staff-kpi"><span>Tổng tồn kho</span><strong>{{ stats.stock_total }}</strong></article>
+</section>
+{% endif %}
+
+<section class="dash-card">
+  <div class="dash-card-head">
+    <h2>{% if inventory_only %}Bảng quản lý tồn kho{% else %}Danh sách sản phẩm{% endif %}</h2>
+    {% if inventory_only %}<a class="dash-btn" href="{% url 'shop:staff_inventory_report' %}">Xem báo cáo</a>{% endif %}
+  </div>
+  <form class="dash-filters inventory-filter" method="get">
+    <input name="q" value="{{ request.GET.q }}" placeholder="Tìm tên hoặc SKU">
+    {% if inventory_only %}
+      <select name="category"><option value="">Tất cả danh mục</option>{% for category in categories %}<option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>{% endfor %}</select>
+      <select name="stock_status"><option value="">Tất cả trạng thái</option><option value="in_stock" {% if request.GET.stock_status == "in_stock" %}selected{% endif %}>Còn hàng</option><option value="low_stock" {% if request.GET.stock_status == "low_stock" %}selected{% endif %}>Sắp hết</option><option value="out_stock" {% if request.GET.stock_status == "out_stock" %}selected{% endif %}>Hết hàng</option></select>
+      <select name="sort"><option value="stock_asc" {% if request.GET.sort == "stock_asc" %}selected{% endif %}>Tồn tăng dần</option><option value="stock_desc" {% if request.GET.sort == "stock_desc" %}selected{% endif %}>Tồn giảm dần</option></select>
+    {% endif %}
+    <button>Tìm kiếm</button>
+  </form>
+  <div class="dash-table-wrap">
+    <table class="dash-table inventory-table">
+      <thead><tr><th>Ảnh</th><th>Tên sản phẩm</th><th>SKU</th><th>Danh mục</th><th>Giá</th><th>Tồn hiện tại</th><th>Trạng thái</th>{% if inventory_only %}<th>Thao tác</th>{% endif %}</tr></thead>
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td>{% if product.main_image %}<img class="admin-thumb" src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<span class="admin-thumb empty-thumb"></span>{% endif %}</td>
+            <td><strong>{{ product.name }}</strong>{% if product.latest_inventory_log %}<small>Cập nhật gần nhất: {{ product.latest_inventory_log.created_at|date:"d/m/Y H:i" }}</small>{% endif %}</td>
+            <td>{{ product.sku }}</td>
+            <td>{{ product.category.name }}</td>
+            <td>{{ product.price_display }}</td>
+            <td>{{ product.stock }}</td>
+            <td>{% if product.stock == 0 %}<span class="status-badge status-cancelled">Hết hàng</span>{% elif product.stock <= 10 %}<span class="status-badge status-pending">Sắp hết</span>{% else %}<span class="status-badge status-completed">Còn hàng</span>{% endif %}</td>
+            {% if inventory_only %}
+              <td class="row-actions action-buttons">
+                <a href="{% url 'shop:staff_inventory_update' product.id %}">Cập nhật</a>
+                <a href="{% url 'shop:staff_inventory_update' product.id %}">Kiểm tra</a>
+                <a href="{% url 'shop:staff_inventory_update' product.id %}">Lịch sử</a>
+              </td>
+            {% endif %}
+          </tr>
+        {% empty %}<tr><td colspan="{% if inventory_only %}8{% else %}7{% endif %}">Không có sản phẩm phù hợp.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

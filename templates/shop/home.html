@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}L.T.N Clothing | Thời trang nữ tinh tế{% endblock %}
+
+{% block content %}
+<main class="jm-home">
+  <section class="jm-hero hero-section ltn-main-hero" style="background-image: url('{% static "img/hero/ltn-main-hero.png" %}')">
+    <div class="jm-hero__overlay ltn-main-hero__overlay">
+      <a class="btn jm-btn-light" href="{% url 'shop:product_list' %}">Khám phá thêm</a>
+    </div>
+    <form class="jm-search" action="{% url 'shop:product_list' %}" method="get">
+      <input name="q" placeholder="Bạn muốn tìm sản phẩm gì?">
+      <button>Tìm kiếm ngay</button>
+    </form>
+  </section>
+
+  <section class="container jm-section">
+    <div class="category-row jm-category-row">
+      {% for category in categories %}
+        {% include "partials/category_circle.html" %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="container jm-section">
+    <div class="section-title">
+      <p class="eyebrow">Bộ sưu tập</p>
+      <h2>Khoảnh khắc thời trang L.T.N</h2>
+    </div>
+    <div class="jm-banner-grid">
+      {% for banner in grid_banners %}
+        <a class="jm-banner" href="{{ banner.button_url|default:'/products/' }}" aria-label="{{ banner.title }}" title="{{ banner.title }}">
+          {% if banner.image %}<img src="{{ banner.image.url }}" alt="{{ banner.title }}">{% endif %}
+        </a>
+      {% empty %}
+        {% for collection in collections %}
+          <a class="jm-banner" href="{{ collection.get_absolute_url }}" aria-label="{{ collection.title }}" title="{{ collection.title }}">
+            {% if collection.banner_image %}<img src="{{ collection.banner_image.url }}" alt="{{ collection.title }}">{% endif %}
+          </a>
+        {% endfor %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="container jm-section">
+    <div class="section-title">
+      <p class="eyebrow">Nổi bật</p>
+      <h2>Sản phẩm được yêu thích</h2>
+    </div>
+    <div class="jm-product-grid">
+      {% for product in featured_products %}{% include "partials/product_card.html" %}{% endfor %}
+    </div>
+  </section>
+
+  <section class="container jm-section">
+    <div class="section-title">
+      <p class="eyebrow">Mới nhất</p>
+      <h2>Thiết kế vừa lên kệ</h2>
+    </div>
+    <div class="jm-product-grid">
+      {% for product in latest_products %}{% include "partials/product_card.html" %}{% endfor %}
+    </div>
+  </section>
+
+  <section class="container jm-section">
+    <div class="section-title">
+      <p class="eyebrow">Ưu đãi</p>
+      <h2>Sản phẩm sale</h2>
+    </div>
+    <div class="jm-product-grid">
+      {% for product in sale_products %}{% include "partials/product_card.html" %}{% endfor %}
+    </div>
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+{% static 'js/main.js' as main_js %}
+<script src="{{ main_js }}"></script>
+{% endblock %}

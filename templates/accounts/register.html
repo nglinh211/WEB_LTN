@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Đăng ký | L.T.N Clothing{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/auth.css' %}">{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<main class="auth-shell">
+  <section class="auth-panel auth-panel-wide" aria-labelledby="register-title">
+    <a class="brand auth-brand" href="{% url 'shop:home' %}">
+      <img src="{% static 'WEBIMG/logoweb.jpg' %}" alt="L.T.N Clothing">
+      <span>L.T.N Clothing</span>
+    </a>
+
+    <div class="auth-heading">
+      <span class="eyebrow">Tạo tài khoản</span>
+      <h1 id="register-title">Đăng ký khách hàng</h1>
+      <p>Tạo tài khoản để lưu giỏ hàng, đặt hàng và theo dõi lịch sử mua sắm.</p>
+    </div>
+
+    <form class="auth-form auth-form-two" method="post" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="status form-wide">{{ form.non_field_errors|striptags }}</div>
+      {% endif %}
+
+      {% for field in form %}
+        <label class="field {% if field.name == 'address' %}form-wide{% endif %}">
+          <span>{{ field.label }}</span>
+          {{ field }}
+          {% if field.help_text %}
+            <small>{{ field.help_text|safe }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <small class="field-error">{{ error }}</small>
+          {% endfor %}
+        </label>
+      {% endfor %}
+
+      <button class="form-wide" type="submit">Đăng ký</button>
+    </form>
+
+    <div class="auth-links">
+      <a href="{% url 'shop:home' %}">Về trang chủ</a>
+      <a href="{% url 'accounts:login' %}">Đã có tài khoản</a>
+    </div>
+  </section>
+</main>
+{% endblock %}

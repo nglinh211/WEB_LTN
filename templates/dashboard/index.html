@@ -1,0 +1,70 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static humanize %}
+{% block title %}Tổng quan vận hành | L.T.N{% endblock %}
+{% block content %}
+<section class="kpi-grid">
+  <article class="kpi-card"><span>Tổng doanh thu</span><strong>{{ stats_display.total_revenue }}</strong><small>Đơn hoàn thành</small></article>
+  <article class="kpi-card"><span>Doanh thu tháng này</span><strong>{{ stats_display.monthly_revenue }}</strong><small>Từ ngày đầu tháng</small></article>
+  <article class="kpi-card"><span>Tổng đơn hàng</span><strong>{{ stats.total_orders }}</strong><small>{{ stats.pending_orders }} đơn chờ xử lý</small></article>
+  <article class="kpi-card"><span>Tỷ lệ hoàn thành</span><strong>{{ stats.completion_rate }}%</strong><small>{{ stats.completed_orders }} đơn hoàn thành</small></article>
+  <article class="kpi-card"><span>Sản phẩm đang bán</span><strong>{{ stats.total_products }}</strong><small>Đang active</small></article>
+  <article class="kpi-card"><span>Sắp hết hàng</span><strong>{{ stats.low_stock_products }}</strong><small>Tồn kho từ 10 trở xuống</small></article>
+  <article class="kpi-card"><span>Tổng khách hàng</span><strong>{{ stats.total_customers }}</strong><small>Vai trò khách hàng</small></article>
+  <article class="kpi-card"><span>Đơn chờ xử lý</span><strong>{{ stats.pending_orders }}</strong><small>Cần xác nhận</small></article>
+</section>
+
+<section class="chart-grid">
+  <article class="dash-card chart-card"><h2>Doanh thu 7 ngày gần nhất</h2><canvas id="revenueChart"></canvas></article>
+  <article class="dash-card chart-card"><h2>Đơn hàng theo trạng thái</h2><canvas id="orderStatusChart"></canvas></article>
+  <article class="dash-card chart-card"><h2>Top danh mục</h2><canvas id="categoryChart"></canvas></article>
+  <article class="dash-card chart-card"><h2>Top sản phẩm bán chạy</h2><canvas id="topProductChart"></canvas></article>
+</section>
+
+<section class="data-grid dashboard-overview-grid">
+  <article class="dash-card dashboard-orders-card">
+    <div class="dash-card-head"><h2>Đơn hàng gần đây</h2><a href="{% url 'shop:dashboard_orders' %}">Xem tất cả</a></div>
+    <div class="dash-table-wrap">
+      <table class="dash-table dashboard-orders-table">
+        <thead><tr><th>Mã</th><th>Khách hàng</th><th>Tổng</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+          {% for order in recent_orders %}
+            <tr><td>#{{ order.id }}</td><td>{{ order.full_name }}</td><td>{{ order.total_amount_display }}</td><td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td></tr>
+          {% empty %}<tr><td colspan="4">Chưa có đơn hàng.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="dash-card dashboard-side-card">
+    <div class="dash-card-head"><h2>Sản phẩm sắp hết hàng</h2><a href="{% url 'shop:dashboard_products' %}">Quản lý</a></div>
+    <div class="media-list">
+      {% for product in low_stock_list %}
+        <div class="media-row">
+          {% if product.main_image %}<img src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<span class="thumb-placeholder"></span>{% endif %}
+          <div><strong>{{ product.name }}</strong><small>{{ product.category.name }}</small></div>
+          <span class="stock-pill">{{ product.stock }}</span>
+        </div>
+      {% empty %}<p>Không có sản phẩm sắp hết.</p>{% endfor %}
+    </div>
+  </article>
+
+  <article class="dash-card dashboard-side-card">
+    <div class="dash-card-head"><h2>Khách hàng mới</h2><a href="{% url 'shop:dashboard_customers' %}">Xem tất cả</a></div>
+    <div class="media-list">
+      {% for customer in new_customers %}
+        <div class="media-row user-row"><span class="avatar-dot">{{ customer.username|first|upper }}</span><div><strong>{{ customer.profile.full_name|default:customer.username }}</strong><small>{{ customer.email }}</small></div><span class="role-badge">Khách hàng</span></div>
+      {% empty %}<p>Chưa có khách hàng.</p>{% endfor %}
+    </div>
+  </article>
+</section>
+
+{{ revenue_chart|json_script:"revenue-data" }}
+{{ order_status_chart|json_script:"status-data" }}
+{{ category_chart|json_script:"category-data" }}
+{{ top_product_chart|json_script:"top-product-data" }}
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

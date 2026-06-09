@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section">
+  <article class="card">
+    <p class="eyebrow">{{ post.created_at|date:"d/m/Y" }}</p>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.summary }}</p>
+    {% if post.thumbnail %}<img src="{{ post.thumbnail.url }}" alt="{{ post.title }}">{% endif %}
+    <p>{{ post.content|linebreaks }}</p>
+  </article>
+</main>
+{% endblock %}

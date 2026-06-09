@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Yêu thích | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section">
+  <div class="page-head"><div><p class="eyebrow">Yêu thích</p><h1>Sản phẩm đã lưu</h1></div></div>
+  <div class="grid grid-3">
+    {% for item in items %}
+      {% with product=item.product %}{% include "partials/product_card.html" %}{% endwith %}
+    {% empty %}<div class="empty">Bạn chưa lưu sản phẩm yêu thích.</div>{% endfor %}
+  </div>
+</main>
+{% endblock %}

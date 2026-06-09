@@ -1,0 +1,74 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Gán target sale | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card sale-target-hero">
+  <div>
+    <p class="dashboard-eyebrow">Target khuyến mãi</p>
+    <h2>{{ sale.name }}</h2>
+    <p>{{ sale.discount_label }} · {{ sale.start_date|date:"d/m/Y H:i" }} - {{ sale.end_date|date:"d/m/Y H:i" }}</p>
+  </div>
+  <span class="status-badge sale-status-{{ sale.status_key }}">{{ sale.status_label }}</span>
+</section>
+
+<section class="target-grid">
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Chọn sản phẩm</h2></div>
+    <form class="dash-filters staff-filter" method="get">
+      <input name="q" value="{{ query }}" placeholder="Tìm sản phẩm hoặc SKU">
+      <button>Tìm</button>
+    </form>
+    <form method="post" class="target-product-list">
+      {% csrf_token %}
+      {% for product in products %}
+        <label><input type="checkbox" name="products" value="{{ product.id }}"><span>{{ product.name }}</span><small>{{ product.sku }} · {{ product.category.name }}</small></label>
+      {% empty %}<p>Không tìm thấy sản phẩm.</p>{% endfor %}
+      <button class="dash-btn" type="submit">Gán sản phẩm đã chọn</button>
+    </form>
+  </article>
+
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Gán theo nhóm</h2></div>
+    <form method="post" class="dashboard-form compact-form">
+      {% csrf_token %}
+      <label>Danh mục
+        <select name="category">
+          <option value="">Không chọn</option>
+          {% for category in categories %}<option value="{{ category.id }}">{{ category.name }}</option>{% endfor %}
+        </select>
+      </label>
+      <label>Bộ sưu tập
+        <select name="collection">
+          <option value="">Không chọn</option>
+          {% for collection in collections %}<option value="{{ collection.id }}">{{ collection.title }}</option>{% endfor %}
+        </select>
+      </label>
+      <button class="dash-btn" type="submit">Gán nhóm</button>
+    </form>
+  </article>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Target đã gán</h2><a href="{% url 'shop:dashboard_sales' %}">Về danh sách sale</a></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Target</th><th>Ngày gán</th><th>Hành động</th></tr></thead>
+      <tbody>
+        {% for target in targets %}
+          <tr>
+            <td>{{ target.target_label }}</td>
+            <td>{{ target.created_at|date:"d/m/Y H:i" }}</td>
+            <td>
+              <form method="post" class="inline-status-form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete_target">
+                <input type="hidden" name="target_id" value="{{ target.id }}">
+                <button>Xóa target</button>
+              </form>
+            </td>
+          </tr>
+        {% empty %}<tr><td colspan="3">Chưa có target.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

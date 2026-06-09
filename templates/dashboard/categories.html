@@ -1,0 +1,16 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Danh mục | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Danh mục sản phẩm</h2><a class="dash-btn" href="/admin/shop/category/add/">Thêm danh mục</a></div>
+  <div class="category-admin-grid">
+    {% for category in categories %}
+      <article class="category-admin-card">
+        {% if category.icon %}<img src="{{ category.icon.url }}" alt="{{ category.name }}">{% elif category.image %}<img src="{{ category.image.url }}" alt="{{ category.name }}">{% else %}<span>{{ category.name|first }}</span>{% endif %}
+        <div><h3>{{ category.name }}</h3><p>{{ category.product_count }} sản phẩm</p><span class="status-badge {% if category.is_active %}status-completed{% else %}status-cancelled{% endif %}">{% if category.is_active %}Đang hiển thị{% else %}Đã ẩn{% endif %}</span></div>
+        <div class="row-actions"><a href="/admin/shop/category/{{ category.id }}/change/">Sửa</a>{% if can_delete %}<a href="/admin/shop/category/{{ category.id }}/delete/">Xóa</a>{% endif %}</div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

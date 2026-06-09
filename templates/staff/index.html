@@ -1,0 +1,150 @@
+{% extends "staff/base_staff.html" %}
+{% load static %}
+{% block title %}Tổng quan nhân viên | L.T.N{% endblock %}
+{% block content %}
+<section class="staff-kpi-grid">
+  <article class="staff-kpi"><span>Doanh thu hôm nay</span><strong>{{ today_revenue_display }}</strong><small>Từ đơn không bị hủy</small></article>
+  <article class="staff-kpi"><span>Đơn mới</span><strong>{{ new_orders_today }}</strong><small>Phát sinh trong hôm nay</small></article>
+  <article class="staff-kpi"><span>Khách cần chăm sóc</span><strong>{{ care_customers }}</strong><small>Khách mới trong 7 ngày</small></article>
+  <article class="staff-kpi"><span>Tồn kho sắp hết</span><strong>{{ low_stock_count }}</strong><small>Tồn kho từ 10 trở xuống</small></article>
+</section>
+
+<section class="staff-quick-grid">
+  <a href="{% url 'shop:staff_orders' %}"><svg viewBox="0 0 24 24"><path d="M7 3h10v18l-2-1-2 1-2-1-2 1-2-1V3Zm3 5h4m-4 4h4"/></svg><span>Xem đơn hàng</span></a>
+  <a href="{% url 'shop:staff_orders' %}"><svg viewBox="0 0 24 24"><path d="m4 12 4 4L20 4M4 20h16"/></svg><span>Cập nhật trạng thái</span></a>
+  <a href="{% url 'shop:staff_inventory' %}"><svg viewBox="0 0 24 24"><path d="M4 7h16M6 7v13h12V7M8 4h8l2 3H6l2-3"/></svg><span>Kiểm tra tồn kho</span></a>
+  <a href="{% url 'shop:staff_customers' %}"><svg viewBox="0 0 24 24"><path d="M16 11a4 4 0 1 0-8 0m8 0c3 1 5 3 5 6v2H3v-2c0-3 2-5 5-6"/></svg><span>Xem khách hàng</span></a>
+  <a href="{% url 'shop:staff_products' %}"><svg viewBox="0 0 24 24"><path d="M6 7V6a6 6 0 0 1 12 0v1m-15 0h18l-2 14H5L3 7"/></svg><span>Xem sản phẩm</span></a>
+</section>
+
+<section class="staff-grid-main">
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Công việc hôm nay</h2></div>
+    <div class="staff-todo-list">
+      {% for todo in todos %}
+        <div><span>{{ todo.label }}</span><strong>{{ todo.count }}</strong></div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Tiến độ công việc</h2></div>
+    <div class="staff-progress">
+      <strong>{{ progress_percent }}%</strong>
+      <div class="staff-progress-bar"><span style="width: {{ progress_percent }}%"></span></div>
+      <p>Hoàn thành các đầu việc chính trong ca vận hành.</p>
+    </div>
+  </article>
+</section>
+
+<section class="staff-insight-grid">
+  <article class="dash-card staff-insight-card">
+    <div class="staff-insight-head">
+      <div><span>Vận hành</span><h2>Đơn hàng 7 ngày</h2></div>
+      <strong>{{ staff_order_total }}</strong>
+    </div>
+    <div class="staff-visual-chart" aria-label="Đơn hàng 7 ngày">
+      {% for point in staff_order_points %}
+        <div class="staff-chart-col" title="{{ point.label }}: {{ point.value }}">
+          <b>{{ point.value }}</b>
+          <div><i style="height: {{ point.percent }}%"></i></div>
+          <span>{{ point.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="dash-card staff-insight-card">
+    <div class="staff-insight-head">
+      <div><span>Kinh doanh</span><h2>Doanh thu tuần</h2></div>
+      <strong>{{ staff_revenue_total }}</strong>
+    </div>
+    <div class="staff-visual-chart" aria-label="Doanh thu tuần">
+      {% for point in staff_revenue_points %}
+        <div class="staff-chart-col revenue" title="{{ point.label }}: {{ point.value }}">
+          <b>{{ point.value }}</b>
+          <div><i style="height: {{ point.percent }}%"></i></div>
+          <span>{{ point.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="dash-card staff-insight-card">
+    <div class="staff-insight-head">
+      <div><span>Chăm sóc</span><h2>Khách hàng mới</h2></div>
+      <strong>{{ staff_customer_total }}</strong>
+    </div>
+    <div class="staff-visual-chart" aria-label="Khách hàng mới">
+      {% for point in staff_customer_points %}
+        <div class="staff-chart-col customer" title="{{ point.label }}: {{ point.value }}">
+          <b>{{ point.value }}</b>
+          <div><i style="height: {{ point.percent }}%"></i></div>
+          <span>{{ point.label }}</span>
+        </div>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="staff-grid-main">
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Top sản phẩm bán chạy</h2></div>
+    <div class="staff-top-list">
+      {% for product in top_staff_products %}
+        <article class="staff-top-item">
+          <span class="staff-rank">{{ product.rank }}</span>
+          <div>
+            <strong>{{ product.name }}</strong>
+            <small>{{ product.revenue_display }}</small>
+          </div>
+          <b>{{ product.sold_quantity }} đã bán</b>
+        </article>
+      {% empty %}
+        <p>Chưa có dữ liệu bán hàng.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="dash-card">
+    <div class="dash-card-head"><h2>Khách mới cần chăm sóc</h2><a href="{% url 'shop:staff_customers' %}">Xem tất cả</a></div>
+    <div class="media-list">
+      {% for customer in new_customers %}
+        <div class="media-row user-row"><span class="avatar-dot">{{ customer.username|first|upper }}</span><div><strong>{{ customer.profile.full_name|default:customer.username }}</strong><small>{{ customer.email }}</small></div><span class="role-badge">Khách hàng</span></div>
+      {% empty %}<p>Chưa có khách mới.</p>{% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Đơn cần xử lý</h2><a href="{% url 'shop:staff_orders' %}">Xem tất cả</a></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Tổng tiền</th><th>Trạng thái</th><th>Ngày tạo</th><th>Thao tác</th></tr></thead>
+      <tbody>
+        {% for order in attention_orders %}
+          <tr><td>#{{ order.id }}</td><td>{{ order.full_name }}</td><td>{{ order.phone }}</td><td>{{ order.total_amount_display }}</td><td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td><td>{{ order.created_at|date:"d/m/Y H:i" }}</td><td class="row-actions"><a href="{% url 'shop:staff_orders' %}">Cập nhật</a></td></tr>
+        {% empty %}<tr><td colspan="7">Không có đơn cần xử lý.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Sản phẩm cần chú ý</h2><a href="{% url 'shop:staff_inventory' %}">Xem tồn kho</a></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Ảnh</th><th>Sản phẩm</th><th>SKU</th><th>Tồn kho</th><th>Trạng thái</th></tr></thead>
+      <tbody>
+        {% for product in attention_products %}
+          <tr><td>{% if product.main_image %}<img class="admin-thumb" src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<span class="admin-thumb empty-thumb"></span>{% endif %}</td><td><strong>{{ product.name }}</strong><small>{{ product.category.name }}</small></td><td>{{ product.sku }}</td><td>{{ product.stock }}</td><td>{% if product.stock == 0 %}<span class="status-badge status-cancelled">Hết hàng</span>{% else %}<span class="status-badge status-pending">Sắp hết</span>{% endif %}</td></tr>
+        {% empty %}<tr><td colspan="5">Tồn kho đang ổn.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{{ staff_order_chart|json_script:"staff-order-data" }}
+{{ staff_revenue_chart|json_script:"staff-revenue-data" }}
+{{ staff_customer_chart|json_script:"staff-customer-data" }}
+{% endblock %}

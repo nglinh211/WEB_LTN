@@ -1,0 +1,20 @@
+﻿.auth-page {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px 16px;
+  background: linear-gradient(135deg, rgba(250, 245, 246, .96), rgba(248, 232, 238, .88)), url("../../WEBIMG/hiện đâị + basic.1.png") center/cover;
+}
+.auth-card {
+  width: min(480px, 100%);
+  background: rgba(255, 255, 255, .96);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 24px 70px rgba(59, 13, 17, .15);
+}
+.auth-card .brand { margin-bottom: 22px; }
+.demo-list { display: grid; gap: 10px; margin: 18px 0; }
+.demo-list button, .demo-list span { width: 100%; text-align: left; background: var(--rose-bg); color: var(--text-dark); border: 1px solid var(--border); }
+.status { margin-top: 14px; padding: 12px; border-radius: 8px; background: var(--rose-bg); color: var(--fashion-maroon); font-weight: 800; }
+.auth-links { display: flex; justify-content: space-between; gap: 16px; margin-top: 18px; color: var(--fashion-maroon); font-weight: 800; }

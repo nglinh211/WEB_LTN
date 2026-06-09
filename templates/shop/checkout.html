@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}Thanh toán | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container section contact-grid">
+  <section>
+    <p class="eyebrow">Thanh toán</p>
+    <h1>Hoàn tất đơn hàng</h1>
+    <form class="card form-grid" method="post">
+      {% csrf_token %}
+      {{ form.full_name }}{{ form.phone }}{{ form.address }}{{ form.note }}{{ form.payment_method }}
+      {% if form.errors %}<div class="empty">{{ form.errors }}</div>{% endif %}
+      <button>Đặt hàng</button>
+    </form>
+  </section>
+  <aside class="card">
+    <h2>Tóm tắt giỏ hàng</h2>
+    {% for item in cart.items.all %}<p>{{ item.product.name }} x {{ item.quantity }}<br><strong>{{ item.subtotal|vnd }}</strong></p>{% endfor %}
+    <h3>Tổng: {{ cart.total_amount|vnd }}</h3>
+  </aside>
+</main>
+{% endblock %}

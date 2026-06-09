@@ -1,0 +1,5 @@
+﻿window.LTN_NEWS = [
+  { id: 1, title: "Bộ sưu tập Burgundy Muse ra mắt", date: "2026-06-01", summary: "Sắc đỏ đô chủ đạo được làm mới bằng lụa, nhung và những đường cắt hiện đại.", content: "Burgundy Muse là bộ sưu tập dành cho những ngày nàng muốn xuất hiện thật chỉn chu. Các thiết kế tập trung vào blazer, đầm dự tiệc và sơ mi satin để dễ ứng dụng từ công sở đến buổi hẹn." },
+  { id: 2, title: "5 cách phối satin trắng cho ngày hè", date: "2026-05-26", summary: "Gợi ý phối satin với burgundy, denim sáng màu và phụ kiện ánh vàng nhẹ.", content: "Satin trắng có thể phối cùng quần âu đỏ đô, chân váy kem hoặc túi da cherry. Điểm quan trọng là giữ tổng thể nhẹ, thoáng và có một điểm nhấn màu sắc rõ ràng." },
+  { id: 3, title: "Dịch vụ tư vấn phong cách cá nhân", date: "2026-05-18", summary: "Stylist của L.T.N giúp bạn hoàn thiện tủ đồ theo lịch làm việc và sự kiện.", content: "Khách hàng có thể nhận gợi ý phối đồ theo dáng người, hoàn cảnh sử dụng và ngân sách. Mục tiêu là giúp mỗi món đồ được mặc nhiều lần, đẹp trong nhiều khoảnh khắc." }
+];

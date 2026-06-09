@@ -1,0 +1,27 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load humanize %}
+{% block title %}Đơn hàng | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="order-summary-grid">
+  {% for card in status_cards %}
+    <article class="kpi-card compact"><span>{{ card.label }}</span><strong>{{ card.count }}</strong></article>
+  {% endfor %}
+</section>
+<section class="dash-card">
+  <div class="dash-card-head"><h2>Danh sách đơn hàng</h2></div>
+  <div class="dash-table-wrap">
+    <table class="dash-table">
+      <thead><tr><th>Mã đơn</th><th>Khách hàng</th><th>SĐT</th><th>Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th><th>Ngày tạo</th><th>Hành động</th></tr></thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>#{{ order.id }}</td><td>{{ order.full_name }}</td><td>{{ order.phone }}</td><td>{{ order.total_amount_display }}</td><td>{{ order.get_payment_method_display }}</td>
+            <td><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></td><td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+            <td><form class="inline-status-form" method="post">{% csrf_token %}<input type="hidden" name="order_id" value="{{ order.id }}"><select name="status">{% for key, label in status_choices %}<option value="{{ key }}" {% if order.status == key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button>Cập nhật</button></form></td>
+          </tr>
+        {% empty %}<tr><td colspan="8">Chưa có đơn hàng.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Lookbook | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="lookbook-page container jm-section">
+  <div class="section-title lookbook-title">
+    <p class="eyebrow">Lookbook</p>
+    <h1>Khoảnh khắc thời trang L.T.N</h1>
+    <p>Khám phá những khoảnh khắc thanh lịch, nữ tính và đầy cảm hứng từ thế giới thời trang L.T.N.</p>
+  </div>
+  <div class="lookbook-grid">
+    {% for collection in collections %}
+      {% if collection.banner_image %}
+        <figure class="lookbook-card">
+          <img src="{{ collection.banner_image.url }}" alt="{{ collection.title }}">
+        </figure>
+      {% endif %}
+    {% endfor %}
+    {% for banner in banners %}
+      {% if banner.image %}
+        <figure class="lookbook-card">
+          <img src="{{ banner.image.url }}" alt="{{ banner.title }}">
+        </figure>
+      {% endif %}
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+{% static 'js/main.js' as main_js %}
+<script src="{{ main_js }}"></script>
+{% endblock %}

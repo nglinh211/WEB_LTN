@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load shop_extras %}
+{% block title %}{{ product.name }} | L.T.N Clothing{% endblock %}
+{% block content %}
+<main class="container jm-section">
+  <div class="product-detail-layout">
+    <section class="product-gallery">
+      <div class="product-main-image">
+        {% if product.main_image %}<img src="{{ product.main_image.url }}" alt="{{ product.name }}">{% else %}<img src="/static/WEBIMG/sang trọng.1.png" alt="{{ product.name }}">{% endif %}
+      </div>
+      <div class="product-thumbs">
+        {% if product.main_image %}<img src="{{ product.main_image.url }}" alt="{{ product.name }}">{% endif %}
+        {% for image in product.images.all %}<img src="{{ image.image.url }}" alt="{{ image.alt_text|default:product.name }}">{% endfor %}
+      </div>
+    </section>
+    <aside class="product-summary">
+      <p class="eyebrow">{{ product.category.name }}</p>
+      <h1>{{ product.name }}</h1>
+      <div class="product-detail-rating"><span>★</span> {{ product.average_rating }} / 5 · {{ product.review_count }} đánh giá</div>
+      <p class="price">{% if product.has_sale %}<small><del>{{ product.price|vnd }}</del></small>{% endif %} {{ product.final_price|vnd }}</p>
+      {% if product.has_sale %}
+        {% with sale=product.get_active_sale %}
+          <div class="sale-detail-box">
+            <span class="status-badge sale-status-running">{% if product.get_discount_percent %}-{{ product.get_discount_percent }}%{% else %}Sale{% endif %}</span>
+            {% if sale %}
+              <strong>{{ sale.name }}</strong>
+              <small>Hiệu lực đến {{ sale.end_date|date:"d/m/Y H:i" }}</small>
+            {% else %}
+              <strong>Ưu đãi sản phẩm</strong>
+              <small>Giá sale đang áp dụng</small>
+            {% endif %}
+          </div>
+        {% endwith %}
+      {% endif %}
+      <p>{{ product.description }}</p>
+      <p class="stock-line">Tồn kho: {{ product.stock }}</p>
+      <div class="quantity-row"><span>Số lượng</span><input type="number" value="1" min="1" max="{{ product.stock }}"></div>
+      <div class="hero-actions">
+        {% if product.is_in_stock %}<a class="btn" href="{% url 'shop:add_to_cart' product.id %}">Thêm vào giỏ hàng</a>{% else %}<span class="badge">Hết hàng</span>{% endif %}
+        <a class="btn secondary" href="{% url 'shop:toggle_wishlist' product.id %}">Yêu thích</a>
+      </div>
+    </aside>
+  </div>
+
+  <section class="jm-section product-description">
+    <h2>Mô tả chi tiết</h2>
+    <p>{{ product.description }}</p>
+  </section>
+
+  <section class="jm-section product-reviews">
+    <div class="section-title"><p class="eyebrow">Đánh giá</p><h2>Cảm nhận của khách hàng</h2></div>
+    <div class="review-layout">
+      <article class="review-summary-card">
+        <strong>{{ product.average_rating }}</strong>
+        <span class="review-stars">★★★★★</span>
+        <p>{{ product.review_count }} lượt đánh giá đã được duyệt</p>
+      </article>
+      <article class="review-form-card">
+        <h3>Gửi đánh giá của bạn</h3>
+        {% if user.is_authenticated %}
+          {% if user_review %}
+            <p>Bạn đã đánh giá sản phẩm này. Cảm ơn bạn đã chia sẻ cảm nhận.</p>
+          {% else %}
+            <form method="post" class="review-form">
+              {% csrf_token %}
+              <label>Số sao{{ review_form.rating }}</label>
+              <label>Nhận xét{{ review_form.comment }}</label>
+              {% if review_form.errors %}<div class="form-errors">{{ review_form.errors }}</div>{% endif %}
+              <button class="btn" type="submit">Gửi đánh giá</button>
+            </form>
+          {% endif %}
+        {% else %}
+          <p>Vui lòng đăng nhập để gửi đánh giá sản phẩm.</p>
+          <a class="btn" href="{% url 'accounts:login' %}?next={{ request.path }}">Đăng nhập để đánh giá</a>
+        {% endif %}
+      </article>
+    </div>
+    <div class="review-list">
+      {% for review in reviews %}
+        <article class="review-item">
+          <div><strong>{{ review.user.profile.full_name|default:review.user.username }}</strong><span class="review-stars">{{ review.stars }}</span></div>
+          <small>{{ review.created_at|date:"d/m/Y" }}</small>
+          <p>{{ review.comment }}</p>
+        </article>
+      {% empty %}
+        <div class="empty">Sản phẩm chưa có đánh giá. Hãy là người đầu tiên chia sẻ cảm nhận.</div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="jm-section">
+    <div class="section-title"><p class="eyebrow">Gợi ý</p><h2>Sản phẩm liên quan</h2></div>
+    <div class="jm-product-grid">{% for product in related_products %}{% include "partials/product_card.html" %}{% endfor %}</div>
+  </section>
+</main>
+{% endblock %}

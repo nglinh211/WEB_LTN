@@ -1,0 +1,45 @@
+{% load static %}
+<header class="site-header">
+  <div class="container nav site-header__inner">
+    <a class="brand" href="{% url 'shop:home' %}">
+      <img src="{% static 'WEBIMG/logoweb.jpg' %}" alt="L.T.N Clothing">
+      <span>L.T.N Clothing</span>
+    </a>
+    <nav class="nav-links" id="primary-navigation" aria-label="Điều hướng chính">
+      <a class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'shop:home' %}">Trang chủ</a>
+      <a class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'shop:about' %}">Giới thiệu</a>
+      <a href="{% url 'shop:category_products' slug='dam' %}">Đầm</a>
+      <a href="{% url 'shop:category_products' slug='ao' %}">Áo</a>
+      <a href="{% url 'shop:category_products' slug='quan' %}">Quần</a>
+      <a href="{% url 'shop:category_products' slug='chan-vay' %}">Chân váy</a>
+      <a href="{% url 'shop:category_products' slug='ao-khoac' %}">Áo khoác</a>
+      <a href="{% url 'shop:lookbook' %}">Lookbook</a>
+      <a href="{% url 'shop:collection_list' %}">BST mới</a>
+      <a href="{% url 'shop:blog_list' %}">Tin tức</a>
+    </nav>
+    <div class="nav-icons">
+      <button class="mobile-menu-toggle" type="button" aria-controls="primary-navigation" aria-expanded="false" aria-label="Mở menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>
+      </button>
+      <a href="{% url 'shop:product_list' %}" aria-label="Tìm kiếm" class="icon-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16.5 16.5 4 4"></path></svg>
+      </a>
+      <a href="{% url 'shop:wishlist' %}" aria-label="Yêu thích" class="icon-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"></path></svg>
+        {% if wishlist_count %}<span>{{ wishlist_count }}</span>{% endif %}
+      </a>
+      <a href="{% url 'shop:cart' %}" aria-label="Giỏ hàng" class="icon-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h15l-1.6 8.2a2 2 0 0 1-2 1.6H8.1a2 2 0 0 1-2-1.7L5 3H2"></path><circle cx="9" cy="21" r="1"></circle><circle cx="18" cy="21" r="1"></circle></svg>
+        {% if cart_count %}<span>{{ cart_count }}</span>{% endif %}
+      </a>
+      <a href="{{ user_dashboard_url }}" aria-label="{% if user.is_authenticated %}Tài khoản{% else %}Đăng nhập{% endif %}" class="icon-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+      </a>
+    </div>
+  </div>
+  <div class="utility-bar">
+    <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10h16l-2-5H6l-2 5Z"></path><path d="M5 10v9h14v-9"></path><path d="M9 19v-5h6v5"></path></svg>Hệ thống cửa hàng</a>
+    <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v10H3z"></path><path d="M14 11h4l3 3v3h-7z"></path><circle cx="7" cy="19" r="1.5"></circle><circle cx="18" cy="19" r="1.5"></circle></svg>Thông tin vận chuyển</a>
+    <a href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10v18H7z"></path><path d="M10 7h4"></path><path d="M10 11h4"></path><path d="M10 15h2"></path></svg>Chính sách tích điểm</a>
+  </div>
+</header>

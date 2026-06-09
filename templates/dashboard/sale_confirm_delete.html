@@ -1,0 +1,14 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Xóa khuyến mãi | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card delete-card">
+  <p class="dashboard-eyebrow">Xác nhận xóa</p>
+  <h2>{{ sale.name }}</h2>
+  <p>Thao tác này sẽ xóa chương trình khuyến mãi và các target đã gán. Dữ liệu đơn hàng cũ không bị ảnh hưởng vì giá đã được lưu trong OrderItem.</p>
+  <form method="post" class="form-actions">
+    {% csrf_token %}
+    <button class="dash-btn" type="submit">Xóa khuyến mãi</button>
+    <a class="dash-btn secondary" href="{% url 'shop:dashboard_sales' %}">Hủy</a>
+  </form>
+</section>
+{% endblock %}

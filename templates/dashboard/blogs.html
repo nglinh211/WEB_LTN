@@ -1,0 +1,43 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% block title %}Bài viết | L.T.N Admin{% endblock %}
+{% block content %}
+<section class="dash-card">
+  <div class="dash-card-head">
+    <h2>Quản lý bài viết thời trang</h2>
+    <a class="dash-btn" href="/admin/shop/blogpost/add/">Thêm bài viết</a>
+  </div>
+
+  <div class="blog-admin-list">
+    {% for post in posts %}
+      <article class="blog-admin-row">
+        <a class="blog-admin-thumb" href="{{ post.get_absolute_url }}" aria-label="Xem bài viết {{ post.title }}">
+          {% if post.thumbnail %}
+            <img src="{{ post.thumbnail.url }}" alt="{{ post.title }}">
+          {% else %}
+            <span class="empty-thumb"></span>
+          {% endif %}
+        </a>
+        <div class="blog-admin-content">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.summary|default:"Chưa có mô tả ngắn."|truncatewords:24 }}</p>
+          <small>Ngày tạo: {{ post.created_at|date:"d/m/Y" }}</small>
+        </div>
+        <div class="blog-admin-status">
+          {% if post.is_published %}
+            <span class="status-badge status-completed">Đã xuất bản</span>
+          {% else %}
+            <span class="status-badge status-pending">Bản nháp</span>
+          {% endif %}
+        </div>
+        <div class="row-actions action-buttons">
+          <a href="{{ post.get_absolute_url }}">Xem</a>
+          <a href="/admin/shop/blogpost/{{ post.id }}/change/">Sửa</a>
+          <a href="/admin/shop/blogpost/{{ post.id }}/delete/">Xóa</a>
+        </div>
+      </article>
+    {% empty %}
+      <p class="empty-state">Chưa có bài viết.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
